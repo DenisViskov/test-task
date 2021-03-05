@@ -23,7 +23,6 @@ public class PreInitializeConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(PreInitializeConfig.class);
 
-    @Autowired
     private final ExternalCarsApiService service;
     private List<ExternalBrand> externalBrands;
     private List<ExternalCar> externalCars;
