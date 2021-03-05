@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
 public class ExternalBrandRepositoryImpl implements CrudRepository<ExternalBrand> {
 
     private final Map<Integer, ExternalBrand> storage = new HashMap<>();

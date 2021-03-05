@@ -1,14 +1,11 @@
 package com.rincentral.test.persistence;
 
-import com.rincentral.test.models.external.ExternalCar;
 import com.rincentral.test.models.external.ExternalCarInfo;
 import lombok.NonNull;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
 public class ExternalCarInfoRepositoryImpl implements CrudRepository<ExternalCarInfo>{
 
     private final Map<Integer, ExternalCarInfo> storage = new HashMap<>();
