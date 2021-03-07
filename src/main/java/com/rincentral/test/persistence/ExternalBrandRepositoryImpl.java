@@ -6,7 +6,10 @@ import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ExternalBrandRepositoryImpl implements CrudRepository<ExternalBrand> {
 
@@ -40,5 +43,10 @@ public class ExternalBrandRepositoryImpl implements CrudRepository<ExternalBrand
     @Override
     public ExternalBrand get(int id) {
         return storage.get(id);
+    }
+
+    @Override
+    public Set<ExternalBrand> getAll() {
+        return new HashSet<>(storage.values());
     }
 }

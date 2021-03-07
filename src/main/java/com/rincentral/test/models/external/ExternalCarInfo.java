@@ -5,15 +5,13 @@ import com.rincentral.test.models.external.enums.EngineType;
 import com.rincentral.test.models.external.enums.FuelType;
 import com.rincentral.test.models.external.enums.GearboxType;
 import com.rincentral.test.models.external.enums.WheelDriveType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class ExternalCarInfo {
     @JsonProperty("id")
     private Integer id;

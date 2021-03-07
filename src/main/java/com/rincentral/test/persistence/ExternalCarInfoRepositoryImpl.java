@@ -4,7 +4,9 @@ import com.rincentral.test.models.external.ExternalCarInfo;
 import lombok.NonNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ExternalCarInfoRepositoryImpl implements CrudRepository<ExternalCarInfo>{
 
@@ -38,5 +40,10 @@ public class ExternalCarInfoRepositoryImpl implements CrudRepository<ExternalCar
     @Override
     public ExternalCarInfo get(int id) {
         return storage.get(id);
+    }
+
+    @Override
+    public Set<ExternalCarInfo> getAll() {
+        return new HashSet<>(storage.values());
     }
 }

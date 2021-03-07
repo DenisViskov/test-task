@@ -6,7 +6,9 @@ import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ExternalCarRepositoryImpl implements CrudRepository<ExternalCar>{
 
@@ -40,5 +42,10 @@ public class ExternalCarRepositoryImpl implements CrudRepository<ExternalCar>{
     @Override
     public ExternalCar get(int id) {
         return storage.get(id);
+    }
+
+    @Override
+    public Set<ExternalCar> getAll() {
+        return new HashSet<>(storage.values());
     }
 }

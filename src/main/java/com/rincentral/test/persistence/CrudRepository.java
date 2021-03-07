@@ -1,5 +1,7 @@
 package com.rincentral.test.persistence;
 
+import java.util.Set;
+
 public interface CrudRepository<T> {
 
     void add(T some);
@@ -9,4 +11,6 @@ public interface CrudRepository<T> {
     boolean delete(T some);
 
     T get(int id);
+
+    Set<T> getAll();
 }

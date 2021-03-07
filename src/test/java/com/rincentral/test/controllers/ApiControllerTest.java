@@ -31,11 +31,11 @@ class ApiControllerTest {
     @Test
     void getCars() throws Exception {
         CarRequestParameters carRequestParameters = new CarRequestParameters();
-        carRequestParameters.setCountry("country");
+        carRequestParameters.setCountry("Germany");
         carRequestParameters.setSegment("segment");
         carRequestParameters.setYear(1);
         mockMvc.perform(get("/api/cars")
-                .queryParam(carRequestParameters.getCountry(), carRequestParameters.getCountry())
+                .queryParam("country", carRequestParameters.getCountry())
                 .queryParam(carRequestParameters.getSegment(), carRequestParameters.getSegment())
                 .queryParam("year", String.valueOf(carRequestParameters.getYear())))
                .andExpect(status().isOk());
