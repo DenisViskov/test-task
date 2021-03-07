@@ -2,6 +2,7 @@ package com.rincentral.test.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rincentral.test.TestApplication;
+import com.rincentral.test.controllers.params.QueryParams;
 import com.rincentral.test.models.params.CarRequestParameters;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.util.MultiValueMapAdapter;
 
 import java.util.Map;
 
+import static com.rincentral.test.controllers.params.QueryParams.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,14 +32,16 @@ class ApiControllerTest {
 
     @Test
     void getCars() throws Exception {
-        CarRequestParameters carRequestParameters = new CarRequestParameters();
-        carRequestParameters.setCountry("Germany");
-        carRequestParameters.setSegment("segment");
-        carRequestParameters.setYear(1);
         mockMvc.perform(get("/api/cars")
-                .queryParam("country", carRequestParameters.getCountry())
-                .queryParam(carRequestParameters.getSegment(), carRequestParameters.getSegment())
-                .queryParam("year", String.valueOf(carRequestParameters.getYear())))
+                .queryParam(COUNTRY.getParam(), "Czech Republic")
+                .queryParam(SEGMENT.getParam(), "B-segment")
+                .queryParam(YEAR.getParam(), "2015")
+                .queryParam(MIN_ENGINE_DISPLACEMENT.getParam(), "1200")
+                .queryParam(MIN_ENGINE_HORSE_POWER.getParam(), "86")
+                .queryParam(MIN_MAX_SPEED.getParam(), "200")
+                .queryParam(SEARCH.getParam(), "1.4 TSI")
+                .queryParam(IS_FULL.getParam(), "true")
+                .queryParam(BODY_STYLE.getParam(),"Hatchback"))
                .andExpect(status().isOk());
     }
 
