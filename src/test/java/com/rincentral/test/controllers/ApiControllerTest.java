@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Collections;
 
 import static com.rincentral.test.controllers.params.QueryParams.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,26 +81,64 @@ class ApiControllerTest {
     }
 
     @Test
-    void getFuelTypes() {
+    void getFuelTypes() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/fuel-types"))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString())
+                .contains("GASOLINE");
     }
 
     @Test
-    void getBodyStyles() {
+    void getBodyStyles() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/body-styles"))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString())
+                .contains("Sedan,  Hatchback")
+                .contains("Hatchback")
+                .contains("Sedan")
+                .contains("Sedan,  Hatchback,  Wagon")
+                .contains("Hathback")
+                .contains("Sedan,  Wagon");
     }
 
     @Test
-    void getEngineTypes() {
+    void getEngineTypes() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/engine-types"))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString())
+                .contains("L4");
     }
 
     @Test
-    void getWheelDrives() {
+    void getWheelDrives() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/wheel-drives"))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString())
+                .contains("FWD");
     }
 
     @Test
-    void getGearboxTypes() {
+    void getGearboxTypes() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/api/gearboxes"))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString())
+                .contains("AUTO")
+                .contains("ROBOTIC")
+                .contains("MANUAL");
     }
 
     @Test
     void getMaxSpeed() {
+
     }
 }
