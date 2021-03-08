@@ -30,7 +30,7 @@ public class FindAllTypesServiceImpl implements FindAllTypesService<String> {
     @Override
     public List<String> getBodyStyles() {
         return collectResult(
-                externalCarInfo -> externalCarInfo.getBodyStyle()
+                ExternalCarInfo::getBodyStyle
         );
     }
 

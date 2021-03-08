@@ -9,6 +9,8 @@ public enum QueryParams {
     SEARCH("search"),
     IS_FULL("isFull"),
     YEAR("year"),
+    BRAND("brand"),
+    MODEL("model"),
     BODY_STYLE("bodyStyle");
 
     private final String param;
