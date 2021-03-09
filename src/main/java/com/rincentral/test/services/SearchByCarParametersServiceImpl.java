@@ -1,5 +1,6 @@
 package com.rincentral.test.services;
 
+import com.rincentral.test.exceptions.RequestParametersException;
 import com.rincentral.test.models.BodyCharacteristics;
 import com.rincentral.test.models.CarFullInfo;
 import com.rincentral.test.models.CarInfo;
@@ -19,18 +20,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 @Service
 @RequiredArgsConstructor
-public class SearchByCarParametersServiceImpl implements SearchByParametersService<CarInfo, CarRequestParameters> {
+public class SearchByCarParametersServiceImpl implements SearchByParametersService<List<CarInfo>, CarRequestParameters> {
 
     @Qualifier("externalCarInfoRepository")
     private final CrudRepository externalCarInfoRepository;
     @Qualifier("externalBrandRepository")
     private final CrudRepository externalBrandRepository;
+    @Qualifier("validatorByCarParametersServiceImpl")
+    private final ValidatorService validatorService;
 
     @Override
-    public List<CarInfo> searchByParameters(CarRequestParameters parameters) {
+    public List<CarInfo> searchByParameters(CarRequestParameters parameters) throws RequestParametersException {
+        validatorService.validate(parameters);
         Set<ExternalBrand> filteredExternalBrand = getFilteredExternalBrand(parameters);
         Set<ExternalCarInfo> filteredExternalCarInfo = getFilteredExternalCarInfo(parameters);
         return collectCarInfo(filteredExternalBrand,

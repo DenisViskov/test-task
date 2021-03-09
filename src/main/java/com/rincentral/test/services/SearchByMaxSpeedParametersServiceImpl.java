@@ -1,5 +1,6 @@
 package com.rincentral.test.services;
 
+import com.rincentral.test.exceptions.RequestParametersException;
 import com.rincentral.test.models.params.CarRequestParameters;
 import com.rincentral.test.models.params.MaxSpeedRequestParameters;
 import com.rincentral.test.persistence.CrudRepository;
@@ -17,9 +18,12 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
     private final CrudRepository externalCarInfoRepository;
     @Qualifier("externalBrandRepository")
     private final CrudRepository externalBrandRepository;
+    @Qualifier("validatorByMaxSpeedParametersServiceImpl")
+    private final ValidatorService validatorService;
 
     @Override
-    public List<Double> searchByParameters(MaxSpeedRequestParameters parameters) {
+    public Double searchByParameters(MaxSpeedRequestParameters parameters) throws RequestParametersException {
+        validatorService.validate(parameters);
         return null;
     }
 }

@@ -9,8 +9,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class DefaultAdvice {
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<String> handleException(BindException bindException){
-        return ResponseEntity.status(400)
-                             .body("Wrong given parameters");
+    public ResponseEntity<String> handleBindException(BindException bindException) {
+        return ResponseEntity
+                .status(400)
+                .body("Wrong given parameters");
+    }
+
+    @ExceptionHandler(RequestParametersException.class)
+    public ResponseEntity<String> handleRequestParametersException(RequestParametersException requestParametersException) {
+        return ResponseEntity
+                .status(400)
+                .body(requestParametersException.getMessage());
     }
 }

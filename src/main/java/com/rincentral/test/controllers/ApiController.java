@@ -1,12 +1,11 @@
 package com.rincentral.test.controllers;
 
+import com.rincentral.test.exceptions.RequestParametersException;
 import com.rincentral.test.models.CarInfo;
 import com.rincentral.test.models.params.CarRequestParameters;
 import com.rincentral.test.models.params.MaxSpeedRequestParameters;
 import com.rincentral.test.services.FindAllTypesService;
 import com.rincentral.test.services.SearchByParametersService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping("/api")
@@ -36,8 +33,9 @@ public class ApiController {
     }
 
     @GetMapping("/cars")
-    public ResponseEntity<List<? extends CarInfo>> getCars(CarRequestParameters requestParameters) {
-        return ResponseEntity.ok(searchByParametersService.searchByParameters(requestParameters));
+    public ResponseEntity<List<? extends CarInfo>> getCars(CarRequestParameters requestParameters) throws RequestParametersException {
+        List<CarInfo> result = (List<CarInfo>)searchByParametersService.searchByParameters(requestParameters);
+        return result.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 
     @GetMapping("/fuel-types")
@@ -66,11 +64,8 @@ public class ApiController {
     }
 
     @GetMapping("/max-speed")
-    public ResponseEntity<Double> getMaxSpeed(MaxSpeedRequestParameters requestParameters) {
-        return ResponseEntity.ok(
-                ((Double)Optional.ofNullable(searchByMaxSpeedParametersService
-                        .searchByParameters(requestParameters)
-                        .get(0)).orElse(null))
-        );
+    public ResponseEntity<Double> getMaxSpeed(MaxSpeedRequestParameters requestParameters) throws RequestParametersException {
+        Double result = (Double)searchByMaxSpeedParametersService.searchByParameters(requestParameters);
+        return isNull(result) ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 }

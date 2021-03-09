@@ -1,8 +1,8 @@
 package com.rincentral.test.services;
 
-import java.util.List;
+import com.rincentral.test.exceptions.RequestParametersException;
 
 public interface SearchByParametersService<T, V> {
 
-    List<T> searchByParameters(V parameters);
+    T searchByParameters(V parameters) throws RequestParametersException;
 }
