@@ -1,9 +1,9 @@
 package com.rincentral.test.services;
 
 import com.rincentral.test.models.external.ExternalCarInfo;
-import com.rincentral.test.models.external.enums.FuelType;
 import com.rincentral.test.persistence.CrudRepository;
-import lombok.RequiredArgsConstructor;
+import com.rincentral.test.services.interfaces.FindAllTypesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class FindAllTypesServiceImpl implements FindAllTypesService<String> {
 
+    @Autowired
     @Qualifier("externalCarInfoRepository")
-    private final CrudRepository externalCarInfoRepository;
+    private CrudRepository externalCarInfoRepository;
 
     @Override
     public List<String> getFuelTypes() {

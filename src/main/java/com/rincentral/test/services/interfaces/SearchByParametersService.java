@@ -1,4 +1,4 @@
-package com.rincentral.test.services;
+package com.rincentral.test.services.interfaces;
 
 import com.rincentral.test.exceptions.RequestParametersException;
 

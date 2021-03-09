@@ -2,6 +2,7 @@ package com.rincentral.test.services;
 
 import com.rincentral.test.exceptions.RequestParametersException;
 import com.rincentral.test.models.params.CarRequestParameters;
+import com.rincentral.test.services.interfaces.ValidatorService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

@@ -140,9 +140,13 @@ class ApiControllerTest {
     @Test
     void getMaxSpeed() throws Exception {
         mockMvc.perform(get("/api/max-speed")
-                .queryParam(BRAND.getParam(), "Skoda")
-                .queryParam(MODEL.getParam(), "someWord"))
+                .queryParam(MODEL.getParam(), "Picanto"))
                .andExpect(status().isOk())
-               .andExpect(content().string("210"));
+               .andExpect(content().string("156"));
+
+        mockMvc.perform(get("/api/max-speed")
+                .queryParam(BRAND.getParam(), "Skoda"))
+               .andExpect(status().isOk())
+               .andExpect(content().string("206"));
     }
 }

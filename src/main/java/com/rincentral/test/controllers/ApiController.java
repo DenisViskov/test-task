@@ -4,8 +4,9 @@ import com.rincentral.test.exceptions.RequestParametersException;
 import com.rincentral.test.models.CarInfo;
 import com.rincentral.test.models.params.CarRequestParameters;
 import com.rincentral.test.models.params.MaxSpeedRequestParameters;
-import com.rincentral.test.services.FindAllTypesService;
-import com.rincentral.test.services.SearchByParametersService;
+import com.rincentral.test.services.interfaces.FindAllTypesService;
+import com.rincentral.test.services.interfaces.SearchByParametersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,23 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.Objects.isNull;
-
 @RestController
 @RequestMapping("/api")
 public class ApiController {
 
-    private final SearchByParametersService searchByParametersService;
-    private final SearchByParametersService searchByMaxSpeedParametersService;
-    private final FindAllTypesService findAllTypesService;
+    @Autowired
+    @Qualifier("searchByCarParametersServiceImpl")
+    private SearchByParametersService searchByParametersService;
 
-    public ApiController(@Qualifier("searchByCarParametersServiceImpl") SearchByParametersService searchByParametersService,
-                         @Qualifier("searchByMaxSpeedParametersServiceImpl") SearchByParametersService searchByMaxSpeedParametersService,
-                         FindAllTypesService findAllTypesService) {
-        this.searchByParametersService = searchByParametersService;
-        this.searchByMaxSpeedParametersService = searchByMaxSpeedParametersService;
-        this.findAllTypesService = findAllTypesService;
-    }
+    @Autowired
+    @Qualifier("searchByMaxSpeedParametersServiceImpl")
+    private SearchByParametersService searchByMaxSpeedParametersService;
+
+    @Autowired
+    private FindAllTypesService findAllTypesService;
 
     @GetMapping("/cars")
     public ResponseEntity<List<? extends CarInfo>> getCars(CarRequestParameters requestParameters) throws RequestParametersException {
@@ -66,6 +64,6 @@ public class ApiController {
     @GetMapping("/max-speed")
     public ResponseEntity<Double> getMaxSpeed(MaxSpeedRequestParameters requestParameters) throws RequestParametersException {
         Double result = (Double)searchByMaxSpeedParametersService.searchByParameters(requestParameters);
-        return isNull(result) ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
+        return result.doubleValue() == 0.0 ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 }

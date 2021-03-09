@@ -9,7 +9,9 @@ import com.rincentral.test.models.external.ExternalBrand;
 import com.rincentral.test.models.external.ExternalCarInfo;
 import com.rincentral.test.models.params.CarRequestParameters;
 import com.rincentral.test.persistence.CrudRepository;
-import lombok.RequiredArgsConstructor;
+import com.rincentral.test.services.interfaces.SearchByParametersService;
+import com.rincentral.test.services.interfaces.ValidatorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +22,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
 
 @Service
-@RequiredArgsConstructor
 public class SearchByCarParametersServiceImpl implements SearchByParametersService<List<CarInfo>, CarRequestParameters> {
 
+    @Autowired
     @Qualifier("externalCarInfoRepository")
-    private final CrudRepository externalCarInfoRepository;
+    private CrudRepository externalCarInfoRepository;
+
+    @Autowired
     @Qualifier("externalBrandRepository")
-    private final CrudRepository externalBrandRepository;
+    private CrudRepository externalBrandRepository;
+
+    @Autowired
     @Qualifier("validatorByCarParametersServiceImpl")
-    private final ValidatorService validatorService;
+    private ValidatorService validatorService;
 
     @Override
     public List<CarInfo> searchByParameters(CarRequestParameters parameters) throws RequestParametersException {
