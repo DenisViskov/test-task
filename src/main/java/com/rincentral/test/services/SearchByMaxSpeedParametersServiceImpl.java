@@ -42,8 +42,9 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
         return externalCarInfoRepository.getAll()
                                         .stream()
                                         .filter(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getModel().equals(parameters.getModel()))
-                                        .mapToInt(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
-                                        .average()
+                                        .mapToDouble(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
+                                        .average().stream().map(value -> Math.ceil(value))
+                                        .findFirst()
                                         .orElseGet(() -> 0.0);
     }
 
@@ -57,8 +58,9 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
                 .flatMap(id -> externalCarInfoRepository.getAll()
                                                         .stream()
                                                         .filter(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getBrandId().equals(id)))
-                .mapToInt(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
-                .average()
+                .mapToDouble(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
+                .average().stream().map(value -> Math.ceil(value))
+                .findFirst()
                 .orElseGet(() -> 0.0);
     }
 }

@@ -142,11 +142,16 @@ class ApiControllerTest {
         mockMvc.perform(get("/api/max-speed")
                 .queryParam(MODEL.getParam(), "Picanto"))
                .andExpect(status().isOk())
-               .andExpect(content().string("156"));
+               .andExpect(content().string("157.0"));
 
         mockMvc.perform(get("/api/max-speed")
                 .queryParam(BRAND.getParam(), "Skoda"))
                .andExpect(status().isOk())
-               .andExpect(content().string("206"));
+               .andExpect(content().string("206.0"));
+
+        // Expected error message
+        mockMvc.perform(get("/api/max-speed"))
+               .andExpect(status().is4xxClientError())
+               .andExpect(content().string("model and brand is null"));
     }
 }
