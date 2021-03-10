@@ -5,7 +5,7 @@ sudo: false
 
 install: true
 
-script: gradle build -x test
+script: ./gradlew build -x test
 
 notifications:
   email:
