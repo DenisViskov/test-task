@@ -1,11 +1,12 @@
 language: java
-jdk:
-  - openjdk11
-sudo: false
+install: skip
 
-install: true
+os: linux
+dist: trusty
+jdk: oraclejdk11
 
-script: ./gradlew build -x test
+script:
+  - ./gradlew build -x test
 
 notifications:
   email:
