@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - openjdk11
+sudo: false
+
+install: true
+
+notifications:
+  email:
+    recipients: "-DenisViskov16@gmail.com"
+    on_success: never # default: change
+    on_failure: always # default: always
