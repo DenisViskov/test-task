@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DenisViskov/test-task.svg?branch=master)](https://travis-ci.org/DenisViskov/test-task)
+
 # API cars
 
 API with cars characteristics
