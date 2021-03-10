@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import static java.util.Objects.nonNull;
 
 @Service
@@ -21,15 +18,15 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
 
     @Autowired
     @Qualifier("externalCarInfoRepository")
-    private CrudRepository externalCarInfoRepository;
+    private CrudRepository<ExternalCarInfo> externalCarInfoRepository;
 
     @Autowired
     @Qualifier("externalBrandRepository")
-    private CrudRepository externalBrandRepository;
+    private CrudRepository<ExternalBrand> externalBrandRepository;
 
     @Autowired
     @Qualifier("validatorByMaxSpeedParametersServiceImpl")
-    private ValidatorService validatorService;
+    private ValidatorService<MaxSpeedRequestParameters> validatorService;
 
     @Override
     public Double searchByParameters(MaxSpeedRequestParameters parameters) throws RequestParametersException {
@@ -41,9 +38,9 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
     private Double getAverageByModel(MaxSpeedRequestParameters parameters) {
         return externalCarInfoRepository.getAll()
                                         .stream()
-                                        .filter(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getModel().equals(parameters.getModel()))
-                                        .mapToDouble(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
-                                        .average().stream().map(value -> Math.ceil(value))
+                                        .filter(externalCarInfo -> externalCarInfo.getModel().equals(parameters.getModel()))
+                                        .mapToDouble(ExternalCarInfo::getMaxSpeed)
+                                        .average().stream().map(Math::ceil)
                                         .findFirst()
                                         .orElseGet(() -> 0.0);
     }
@@ -52,14 +49,14 @@ public class SearchByMaxSpeedParametersServiceImpl implements SearchByParameters
         return externalBrandRepository
                 .getAll()
                 .stream()
-                .filter(externalBrand -> ((ExternalBrand)externalBrand).getTitle().equals(parameters.getBrand()))
-                .map(externalBrand -> ((ExternalBrand)externalBrand).getId())
+                .filter(externalBrand -> externalBrand.getTitle().equals(parameters.getBrand()))
+                .map(ExternalBrand::getId)
                 .distinct()
                 .flatMap(id -> externalCarInfoRepository.getAll()
                                                         .stream()
-                                                        .filter(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getBrandId().equals(id)))
-                .mapToDouble(externalCarInfo -> ((ExternalCarInfo)externalCarInfo).getMaxSpeed())
-                .average().stream().map(value -> Math.ceil(value))
+                                                        .filter(externalCarInfo -> externalCarInfo.getBrandId().equals(id)))
+                .mapToDouble(ExternalCarInfo::getMaxSpeed)
+                .average().stream().map(Math::ceil)
                 .findFirst()
                 .orElseGet(() -> 0.0);
     }

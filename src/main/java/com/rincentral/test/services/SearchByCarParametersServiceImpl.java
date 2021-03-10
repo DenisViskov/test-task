@@ -28,15 +28,15 @@ public class SearchByCarParametersServiceImpl implements SearchByParametersServi
 
     @Autowired
     @Qualifier("externalCarInfoRepository")
-    private CrudRepository externalCarInfoRepository;
+    private CrudRepository<ExternalCarInfo> externalCarInfoRepository;
 
     @Autowired
     @Qualifier("externalBrandRepository")
-    private CrudRepository externalBrandRepository;
+    private CrudRepository<ExternalBrand> externalBrandRepository;
 
     @Autowired
     @Qualifier("validatorByCarParametersServiceImpl")
-    private ValidatorService validatorService;
+    private ValidatorService<CarRequestParameters> validatorService;
 
     @Override
     public List<CarInfo> searchByParameters(CarRequestParameters parameters) throws RequestParametersException {
@@ -73,14 +73,14 @@ public class SearchByCarParametersServiceImpl implements SearchByParametersServi
     }
 
     private Set<ExternalBrand> getFilteredExternalBrand(CarRequestParameters parameters) {
-        return (Set<ExternalBrand>)externalBrandRepository.getAll().stream()
-                                                          .filter(carInfo -> {
-                                                              if (nonNull(parameters.getCountry()) && !parameters.getCountry().isBlank()) {
-                                                                  return ((ExternalBrand)carInfo).getCountry().equals(parameters.getCountry());
-                                                              }
-                                                              return true;
-                                                          })
-                                                          .collect(Collectors.toSet());
+        return externalBrandRepository.getAll().stream()
+                                      .filter(carInfo -> {
+                                          if (nonNull(parameters.getCountry()) && !parameters.getCountry().isBlank()) {
+                                              return carInfo.getCountry().equals(parameters.getCountry());
+                                          }
+                                          return true;
+                                      })
+                                      .collect(Collectors.toSet());
     }
 
 

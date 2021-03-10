@@ -18,7 +18,7 @@ public class FindAllTypesServiceImpl implements FindAllTypesService<String> {
 
     @Autowired
     @Qualifier("externalCarInfoRepository")
-    private CrudRepository externalCarInfoRepository;
+    private CrudRepository<ExternalCarInfo> externalCarInfoRepository;
 
     @Override
     public List<String> getFuelTypes() {
@@ -56,10 +56,10 @@ public class FindAllTypesServiceImpl implements FindAllTypesService<String> {
     }
 
     private List<String> collectResult(Function<ExternalCarInfo, String> mapper) {
-        Set<String> result = (Set<String>)externalCarInfoRepository.getAll()
-                                                                   .stream()
-                                                                   .map(mapper)
-                                                                   .collect(Collectors.toSet());
+        Set<String> result = externalCarInfoRepository.getAll()
+                                                      .stream()
+                                                      .map(mapper)
+                                                      .collect(Collectors.toSet());
         return new ArrayList<>(result);
     }
 }

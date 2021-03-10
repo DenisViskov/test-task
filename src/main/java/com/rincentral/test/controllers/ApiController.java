@@ -21,18 +21,18 @@ public class ApiController {
 
     @Autowired
     @Qualifier("searchByCarParametersServiceImpl")
-    private SearchByParametersService searchByParametersService;
+    private SearchByParametersService<List<CarInfo>, CarRequestParameters> searchByParametersService;
 
     @Autowired
     @Qualifier("searchByMaxSpeedParametersServiceImpl")
-    private SearchByParametersService searchByMaxSpeedParametersService;
+    private SearchByParametersService<Double, MaxSpeedRequestParameters> searchByMaxSpeedParametersService;
 
     @Autowired
-    private FindAllTypesService findAllTypesService;
+    private FindAllTypesService<String> findAllTypesService;
 
     @GetMapping("/cars")
     public ResponseEntity<List<? extends CarInfo>> getCars(CarRequestParameters requestParameters) throws RequestParametersException {
-        List<CarInfo> result = (List<CarInfo>)searchByParametersService.searchByParameters(requestParameters);
+        List<CarInfo> result = searchByParametersService.searchByParameters(requestParameters);
         return result.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 
@@ -63,7 +63,7 @@ public class ApiController {
 
     @GetMapping("/max-speed")
     public ResponseEntity<Double> getMaxSpeed(MaxSpeedRequestParameters requestParameters) throws RequestParametersException {
-        Double result = (Double)searchByMaxSpeedParametersService.searchByParameters(requestParameters);
+        Double result = searchByMaxSpeedParametersService.searchByParameters(requestParameters);
         return result.doubleValue() == 0.0 ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 }
