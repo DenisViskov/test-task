@@ -1,15 +1,12 @@
 package com.rincentral.test.persistence;
 
 import com.rincentral.test.models.external.ExternalBrand;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ExternalBrandRepositoryImpl implements CrudRepository<ExternalBrand> {
 

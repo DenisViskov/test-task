@@ -6,40 +6,28 @@ import com.rincentral.test.persistence.ExternalBrandRepositoryImpl;
 import com.rincentral.test.persistence.ExternalCarInfoRepositoryImpl;
 import com.rincentral.test.persistence.ExternalCarRepositoryImpl;
 import com.rincentral.test.services.ExternalCarsApiService;
-import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+@Slf4j
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PreInitializeConfig {
 
-    private static final Logger LOGGER = LogManager.getLogger(PreInitializeConfig.class);
-
     private final ExternalCarsApiService service;
-    private List<ExternalBrand> externalBrands;
-    private List<ExternalCar> externalCars;
+    private final List<ExternalBrand> externalBrands;
+    private final List<ExternalCar> externalCars;
 
     @PostConstruct
     public void initExternalInfo() {
-        LOGGER.info("Running initialize external partners info");
-        externalBrands = service.loadAllBrands();
-        externalCars = service.loadAllCars();
-        if (externalBrands.isEmpty()) {
-            LOGGER.info("External partners returned empty brands list");
-            throw new NoSuchElementException();
-        }
-        if (externalCars.isEmpty()) {
-            LOGGER.info("External partners returned empty cars list");
-            throw new NoSuchElementException();
-        }
+        log.info("Getting data from external partners");
+        tryingToGetInfo();
+        log.info("External partner info initialized was successfully");
     }
 
     @Bean
@@ -63,5 +51,21 @@ public class PreInitializeConfig {
         ExternalCarRepositoryImpl repository = new ExternalCarRepositoryImpl();
         externalCars.forEach(repository::add);
         return repository;
+    }
+
+    private void tryingToGetInfo() {
+        externalBrands.addAll(service.loadAllBrands());
+        externalCars.addAll(service.loadAllCars());
+        while (externalBrands.isEmpty() && externalCars.isEmpty()) {
+            log.error("External partners returned empty lists");
+            log.info("Trying to get info again");
+            externalBrands.addAll(service.loadAllBrands());
+            externalCars.addAll(service.loadAllCars());
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
     }
 }

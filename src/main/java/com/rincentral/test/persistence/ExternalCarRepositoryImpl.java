@@ -1,9 +1,7 @@
 package com.rincentral.test.persistence;
 
-import com.rincentral.test.models.external.ExternalBrand;
 import com.rincentral.test.models.external.ExternalCar;
 import lombok.NonNull;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.HashSet;
